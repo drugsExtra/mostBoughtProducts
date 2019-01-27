@@ -6,6 +6,6 @@
 
 Работает с minishop2
 
-{'mostPopular'|snippet:[
+{'mostPopular.php'|snippet:[
 'tpl'=>'mostPopular.tpl'
 ]}
