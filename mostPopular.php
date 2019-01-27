@@ -1,9 +1,4 @@
 <?php
-/**
-* MODX
-* 
-*/
- $scriptProperties=[];
 // получим массив объектов заказов
 $orders = $modx->getCollection('msOrder');
 $list=[];
@@ -19,10 +14,10 @@ $miniShop2->initialize($modx->context->key);
 if (!$modx->loadClass('pdofetch', MODX_CORE_PATH . 'components/pdotools/model/pdotools/', false, true)) {
     return false;
 }
-$pdoFetch = new pdoFetch($modx, $scriptProperties);
-//для кадлого заказа получаем товары этого заказа и заносим в массив products (ключем является идентификатор товара, а значением будет количество раз когда его купили)
-foreach ($list as $id) {
 
+//для кадлого заказа получаем товары этого заказа и заносим в массив products (ключем является идентификатор товара а значением будет количество раз когда его купили)
+foreach ($list as $id) {
+$pdoFetch = new pdoFetch($modx, $scriptProperties);
 if (!$order = $modx->getObject('msOrder', $id)) {
     //return $modx->lexicon('ms2_err_order_nf');
 }
@@ -78,11 +73,18 @@ foreach ($rows as $product) {
 // сортируем массив по значению, чтобы первыми были те записи у кого значение больше
 arsort($products);
 // формируем ссылку на товар, находим его имя и выводим на экран
+$result=[];
 foreach ($products as $id=>$oneProduct){
+    
     $url = $modx->makeUrl($id);
     $test=$modx->getObject('modResource',$id);
     $name = $test->get('pagetitle');
-    echo "<div><a href='".$url."'>".$name."</a> Купили <strong>".$oneProduct."</strong> раз(а)</div>";
+    $result[]=['id'=>$id,'name'=>$name,'url'=>$url,'counter'=>$oneProduct];
+    //echo "<div><a href='".$url."'>".$name."</a> Купили <strong>".$oneProduct."</strong> раз(а)</div>";
     //echo $name . ' / ' . $url . '</br>';
 }
-//return var_dump($prod);
+$output = $pdoFetch->getChunk($tpl, array(
+    'products' => $result
+    
+));
+return $output;
