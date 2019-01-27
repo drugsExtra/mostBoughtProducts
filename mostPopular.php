@@ -80,8 +80,7 @@ foreach ($products as $id=>$oneProduct){
     $test=$modx->getObject('modResource',$id);
     $name = $test->get('pagetitle');
     $result[]=['id'=>$id,'name'=>$name,'url'=>$url,'counter'=>$oneProduct];
-    //echo "<div><a href='".$url."'>".$name."</a> Купили <strong>".$oneProduct."</strong> раз(а)</div>";
-    //echo $name . ' / ' . $url . '</br>';
+
 }
 $output = $pdoFetch->getChunk($tpl, array(
     'products' => $result
